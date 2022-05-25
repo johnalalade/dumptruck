@@ -15,5 +15,8 @@ user.post('/post', upload, UserController.createPost)
 user.get('/posts', UserController.getPosts)
 user.post('/get-post', UserController.onePost)
 
+user.post('/forget-password', UserController.emailRetrive)
+user.post('/change-password', UserController.passwordReset)
+
 
 module.exports = user

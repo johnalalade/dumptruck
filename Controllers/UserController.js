@@ -416,8 +416,8 @@ const getPosts = (req, res, next) => {
 }
 
 const onePost = (req, res, next) => {
-    let userID = req.body.postID
-    Post.findById(userID)
+    let postID = req.body.postID
+    Post.findById(postID)
         .then(response => {
             res.json({
                 response
@@ -432,6 +432,81 @@ const onePost = (req, res, next) => {
         })
 }
 
+// Email Retrive
+const emailRetrive = (req, res, next) => {
+    let email = req.body.email
+    Login.findOne({ email: email })
+        .then((user) => {
+            if (user) {
+                res.json({
+                    id: user._id,
+                    message: "An email has been sent to your address"
+                })
+                //email
+                var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'uniconneapp@gmail.com',
+                        pass: 'JohnAlalade@4444'
+                    }
+                });
+
+                var mailOptions = {
+                    from: 'uniconneapp@gmail.com',
+                    to: req.body.email,
+                    subject: 'Uniconne Password Reset',
+                    html: `<p>Hello ${user.firstname},</p> <p>To reset your password, please click the link below or copy and paste it in your browser.</p> <a href="https://www.uniconne.com/retrive/${user._id}">Click Here</a> <p>Keep your password safe</p> <p>Kind regards..</p> <quote>~John Alalade</quote>`
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log("Emailimg error: " + error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
+            }
+            else {
+                res.json({
+                    message: "User Doesn't Exist."
+                })
+            }
+        })
+        .catch((err) => {
+            console.log("Email retrival error " + err)
+            res.json({
+                message: "An Error Occured"
+            })
+        })
+}
+
+const passwordReset = (req, res, next) => {
+    bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
+        if (err) {
+            res.json({
+                error: err
+            })
+        }
+
+        let data = {
+            password: hashedPass
+        }
+        let id = req.body.userID
+        Login.findByIdAndUpdate(id, { $set: data })
+            .then((res) => {
+                res.json({
+                    message: "Password Reset successful"
+                })
+            })
+            .catch((err) => {
+                console.log("Password rest error " + err)
+                res.json({
+                    message: "An Error Occured"
+                })
+            })
+    })
+}
+
 module.exports = {
-    register, login, updateProfile, showOne, register_vendor, createPost, getPosts, onePost
+    register, login, updateProfile, showOne, register_vendor, createPost, getPosts, onePost, emailRetrive, passwordReset
 }
