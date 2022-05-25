@@ -1,0 +1,34 @@
+{
+  "name": "agro",
+  "version": "1.0.0",
+  "description": "Agro tech for farmers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "agric",
+    "microsoft"
+  ],
+  "author": "John Alalade",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "mongoose": "^5.10.7",
+    "multer": "^1.4.4",
+    "aws-sdk": "^2.810.0",
+    "axios": "^0.24.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.4.18",
+    "nodemon": "^2.0.4",
+    "sharp": "^0.28.3",
+    "uuid": "^8.3.2"
+  }
+}
