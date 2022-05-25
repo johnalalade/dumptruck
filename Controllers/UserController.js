@@ -286,7 +286,8 @@ const register_vendor = (req, res, next) => {
     let updatedProfile = {
         description: req.body.description,
         truck_plate_number: req.body.truck_plate_number,
-        isVendor: true
+        isVendor: true,
+        phone: req.body.phone
        
     }
     if (req.file) {
