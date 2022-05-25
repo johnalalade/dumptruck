@@ -261,14 +261,7 @@ const showOne = (req, res, next) => {
             res.json({
                 response
             })
-            let bal = response.balance + 0.001
-            let balanceUpdate = {
-                balance: bal
-            }
-            Login.findByIdAndUpdate(userID, { $set: balanceUpdate })
-                .then(dd => {
-
-                })
+            
         })
         .catch(error => {
             res.json({
@@ -422,6 +415,23 @@ const getPosts = (req, res, next) => {
     })
 }
 
+const onePost = (req, res, next) => {
+    let userID = req.body.postID
+    Post.findById(userID)
+        .then(response => {
+            res.json({
+                response
+            })
+            
+        })
+        .catch(error => {
+            res.json({
+                error,
+                message: "Can't Find User"
+            })
+        })
+}
+
 module.exports = {
-    register, login, updateProfile, showOne, register_vendor, createPost, getPosts
+    register, login, updateProfile, showOne, register_vendor, createPost, getPosts, onePost
 }

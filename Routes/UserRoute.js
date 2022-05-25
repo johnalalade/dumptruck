@@ -13,6 +13,7 @@ user.post('/update', upload, UserController.updateProfile)
 user.post('/create', upload, UserController.register_vendor)
 user.post('/post', upload, UserController.createPost)
 user.get('/posts', UserController.getPosts)
+user.post('/get-post', UserController.onePost)
 
 
 module.exports = user
