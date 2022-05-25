@@ -483,7 +483,7 @@ const emailRetrive = (req, res, next) => {
 const passwordReset = (req, res, next) => {
     bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
         if (err) {
-            res.json({
+            console.log({
                 error: err
             })
         }
