@@ -324,31 +324,6 @@ const register_vendor = (req, res, next) => {
 
     }
     Login.findById(userID)
-        .then((data) => {
-            if (req.body.checkerImage == true) {
-
-                if (data.truck_src) {
-
-                    console.log(req.body.checkerImage)
-                    const s3 = new aws.S3();
-                    const imgName = data.truck_src.slice(42)
-                    const s3Params = {
-                        Bucket: S3_BUCKET,
-                        Key: imgName,
-                        // Expires: 180,
-                        // ContentType: fileType,
-                        // ACL: 'public-read'
-                    };
-
-                    s3.deleteObject(s3Params, function (err, data) {
-                        if (err) console.log("image deletion failed" + err, err.stack)
-                        else console.log("image deleted")
-                    })
-                }
-            }
-            else { return data }
-
-        })
         .then((dd) => {
             //console.log(dd)
             Login.findByIdAndUpdate(userID, { $set: updatedProfile })
