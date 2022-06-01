@@ -261,7 +261,7 @@ const showOne = (req, res, next) => {
             res.json({
                 response
             })
-            
+
         })
         .catch(error => {
             res.json({
@@ -281,7 +281,7 @@ const register_vendor = (req, res, next) => {
         truck_plate_number: req.body.truck_plate_number,
         isVendor: true,
         phone: req.body.phone
-       
+
     }
     if (req.file) {
         updatedProfile.truck_src = `https://gigvee.s3.us-east-2.amazonaws.com/${uuidv4() + req.body.filename.trim()}`
@@ -325,7 +325,7 @@ const register_vendor = (req, res, next) => {
                         message: "Profile Updated Successfully",
                         response
                     })
-                    
+
                 })
                 .catch(error => {
                     console.log('Update error ' + error)
@@ -345,7 +345,8 @@ const createPost = (req, res, next) => {
         phone: req.body.phone,
         details: req.body.details,
         location: req.body.location,
-        owner: req.body.owner
+        owner: req.body.owner,
+        accepted: false
     }
 
     if (req.file) {
@@ -402,17 +403,17 @@ const createPost = (req, res, next) => {
 
 const getPosts = (req, res, next) => {
     Post.find()
-    .then(response => {
-        res.json({
-            response: response
+        .then(response => {
+            res.json({
+                response: response.filter(re => !re.accepted)
+            })
         })
-    })
-    .catch((err) => {
-        console.log({indexError: err})
-        res.json({
-            message: "An Error Occured"
+        .catch((err) => {
+            console.log({ indexError: err })
+            res.json({
+                message: "An Error Occured"
+            })
         })
-    })
 }
 
 const onePost = (req, res, next) => {
@@ -422,7 +423,7 @@ const onePost = (req, res, next) => {
             res.json({
                 response
             })
-            
+
         })
         .catch(error => {
             res.json({
@@ -508,6 +509,114 @@ const passwordReset = (req, res, next) => {
     })
 }
 
+const acceptOffer = (req, res, next) => {
+
+    let data = {
+        accepted: true,
+        accepterID: req.body.accepterID,
+        accepterName: req.body.accepterName,
+        accepterImage: req.body.accepterImage
+    }
+
+    Post.findByIdAndUpdate(req.body.postID, { $set: data })
+        .then((response) => {
+
+
+            Login.findById(response.owner)
+                .then(user => {
+
+                    let notification = {
+                        notifications: (user.notifications) ? [{
+                            name: req.body.accepterName,
+                            image: req.body.accepterImage,
+                            accepterID: req.body.accepterID,
+                            time: new Date(),
+                            details: `${req.body.accepterName} accepted ann offer you posted`
+                        }, ...user.notifications] : [{
+                            name: req.body.accepterName,
+                            image: req.body.accepterImage,
+                            accepterID: req.body.accepterID,
+                            time: new Date(),
+                            details: `${req.body.accepterName} accepted ann offer you posted`
+                        }]
+                    }
+
+                    Login.findByIdAndUpdate(user._id, { $set: notification })
+                        .then(update => {
+                            res.json({
+                                status: "success",
+                                data: response
+                            })
+                        })
+
+                })
+        })
+
+}
+
+const getNotification = (req, res, next) => {
+
+    let userID = req.body.userID
+    Login.findById(userID)
+        .then(response => {
+            res.json({
+                status: "success",
+                response: response.notifications ? response.notifications : []
+            })
+
+        })
+        .catch(error => {
+            res.json({
+                error,
+                message: "Can't Find User"
+            })
+        })
+
+
+}
+
+const returnOffer = (req, res, next) => {
+    let data = {
+        accepted: false,
+
+    }
+
+    Post.findByIdAndUpdate(req.body.postID, { $set: data })
+        .then((response) => {
+
+
+            Login.findById(response.owner)
+                .then(user => {
+
+                    let notification = {
+                        notifications: (user.notifications) ? [{
+                            name: req.body.accepterName,
+                            image: req.body.accepterImage,
+                            accepterID: req.body.accepterID,
+                            time: new Date(),
+                            details: `${req.body.accepterName} returned an offer you posted`
+                        }, ...user.notifications] : [{
+                            name: req.body.accepterName,
+                            image: req.body.accepterImage,
+                            accepterID: req.body.accepterID,
+                            time: new Date(),
+                            details: `${req.body.accepterName} returned an offer you posted`
+                        }]
+                    }
+
+                    Login.findByIdAndUpdate(user._id, { $set: notification })
+                        .then(update => {
+                            res.json({
+                                status: "success",
+                                data: response
+                            })
+                        })
+
+                })
+        })
+
+}
+
 module.exports = {
-    register, login, updateProfile, showOne, register_vendor, createPost, getPosts, onePost, emailRetrive, passwordReset
+    register, login, updateProfile, showOne, register_vendor, createPost, getPosts, onePost, emailRetrive, passwordReset, acceptOffer, getNotification, returnOffer
 }

@@ -24,7 +24,18 @@ const postSchema = new mongoose.Schema({
     owner: {
         type: String
     },
-   
+    accepted: {
+        type: Boolean
+    },
+    accepterID: {
+        type: String
+    },
+    accepterName: {
+        type: String
+    },
+    accepterImage: {
+        type: String
+    }
 }, {timestamps: true})
 
 

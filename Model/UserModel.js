@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
     },
     isVendor: {
         type: Boolean
+    },
+    notifications: {
+        type: Array
     }
    
 }, {timestamps: true})
