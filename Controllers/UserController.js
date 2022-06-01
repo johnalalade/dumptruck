@@ -529,15 +529,15 @@ const acceptOffer = (req, res, next) => {
                         notifications: (user.notifications) ? [{
                             name: req.body.accepterName,
                             image: req.body.accepterImage,
-                            accepterID: req.body.accepterID,
+                            ID: req.body.accepterID,
                             time: new Date(),
-                            details: `${req.body.accepterName} accepted ann offer you posted`
+                            details: `${req.body.accepterName} accepted an offer you posted`
                         }, ...user.notifications] : [{
                             name: req.body.accepterName,
                             image: req.body.accepterImage,
-                            accepterID: req.body.accepterID,
+                            ID: req.body.accepterID,
                             time: new Date(),
-                            details: `${req.body.accepterName} accepted ann offer you posted`
+                            details: `${req.body.accepterName} accepted an offer you posted`
                         }]
                     }
 
@@ -590,17 +590,17 @@ const returnOffer = (req, res, next) => {
 
                     let notification = {
                         notifications: (user.notifications) ? [{
-                            name: req.body.accepterName,
-                            image: req.body.accepterImage,
-                            accepterID: req.body.accepterID,
+                            name: req.body.returnerName,
+                            image: req.body.returnerImage,
+                            ID: req.body.returnerID,
                             time: new Date(),
-                            details: `${req.body.accepterName} returned an offer you posted`
+                            details: `${req.body.returnerName} returned an offer you posted`
                         }, ...user.notifications] : [{
-                            name: req.body.accepterName,
-                            image: req.body.accepterImage,
-                            accepterID: req.body.accepterID,
+                            name: req.body.returnerName,
+                            image: req.body.returnerImage,
+                            ID: req.body.returnerID,
                             time: new Date(),
-                            details: `${req.body.accepterName} returned an offer you posted`
+                            details: `${req.body.returnerName} returned an offer you posted`
                         }]
                     }
 
