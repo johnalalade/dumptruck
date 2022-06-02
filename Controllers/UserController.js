@@ -361,7 +361,7 @@ const createPost = (req, res, next) => {
                 const s3 = new aws.S3();
                 const s3Params = {
                     Bucket: S3_BUCKET,
-                    Key: login.src.slice(42),
+                    Key: login.image.slice(42),
                     Body: data,
                     // Expires: 180,
                     ContentDisposition: "attachment;",
