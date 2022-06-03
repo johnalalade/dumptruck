@@ -8,10 +8,6 @@ const postSchema = new mongoose.Schema({
     phone: {
         type: String
     },
-    src: {
-        type: String
-    },
-    
     image: {
         type: String
     },
