@@ -617,6 +617,24 @@ const returnOffer = (req, res, next) => {
 
 }
 
+// Admin
+const admin = (req, res, next) => {
+    Login.find()
+    .then((users) => {
+
+        Post.find()
+        .then(posts => {
+            res.send({
+                number_of_users: users.length,
+                number_of_posts: posts.lemgth,
+                users: users,
+                posts: posts
+            })
+        })
+
+    })
+}
+
 module.exports = {
-    register, login, updateProfile, showOne, register_vendor, createPost, getPosts, onePost, emailRetrive, passwordReset, acceptOffer, getNotification, returnOffer
+    register, login, updateProfile, showOne, register_vendor, createPost, getPosts, onePost, emailRetrive, passwordReset, acceptOffer, getNotification, returnOffer, admin
 }
