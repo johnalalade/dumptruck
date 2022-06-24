@@ -626,8 +626,8 @@ const admin = (req, res, next) => {
         .then(posts => {
             res.send({
                 number_of_users: users.length,
-                number_of_posts: posts.lemgth,
                 users: users,
+                number_of_posts: posts.lemgth,
                 posts: posts
             })
         })
