@@ -620,21 +620,66 @@ const returnOffer = (req, res, next) => {
 // Admin
 const admin = (req, res, next) => {
     Login.find()
-    .then((users) => {
+        .then((users) => {
 
-        Post.find()
-        .then(posts => {
-            res.send({
-                number_of_users: users.length,
-                number_of_posts: posts.length,
-                users: users,
-                posts: posts
+            Post.find()
+                .then(posts => {
+                    res.send({
+                        number_of_users: users.length,
+                        number_of_posts: posts.length,
+                        users: users,
+                        posts: posts
+                    })
+                })
+
+        })
+}
+
+const searchPost = (req, res, next) => {
+    let search = req.body.search
+
+    Post.find({
+        $or: [{ name: new RegExp(search, "ig") },
+        { phone: new RegExp(search, "ig") },
+        { details: new RegExp(search, "ig") },
+        ]
+    })
+        .then(response => {
+            res.json({
+                response
+            })
+        })
+        .catch(error => {
+            console.log(error)
+            res.json({
+                message: "An error Occured"
             })
         })
 
+}
+
+const searchUsers = (req, res, next) => {
+    let search = req.body.search
+
+    Login.find({
+        $or: [{ name: new RegExp(search, "ig") },
+        { phone: new RegExp(search, "ig") },
+        { email: new RegExp(search, "ig") },
+        ]
     })
+        .then(response => {
+            res.json({
+                response
+            })
+        })
+        .catch(error => {
+            console.log(error)
+            res.json({
+                message: "An error Occured"
+            })
+        })
 }
 
 module.exports = {
-    register, login, updateProfile, showOne, register_vendor, createPost, getPosts, onePost, emailRetrive, passwordReset, acceptOffer, getNotification, returnOffer, admin
+    register, login, updateProfile, showOne, register_vendor, createPost, getPosts, onePost, emailRetrive, passwordReset, acceptOffer, getNotification, returnOffer, admin, searchPost, searchUsers
 }
