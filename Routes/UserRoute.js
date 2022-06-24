@@ -21,6 +21,8 @@ user.post('/return-offer', UserController.returnOffer)
 user.post('/forget-password', UserController.emailRetrive)
 user.post('/change-password', UserController.passwordReset)
 user.get('/admin/data', UserController.admin)
+user.get('/admin/user', UserController.searchUsers)
+user.get('/admin/post', UserController.searchPost)
 
 
 module.exports = user
